@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Final Message for Guruji</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    :root{
+      --bg: #071224;
+      --card: rgba(255,255,255,0.03);
+      --accent: #ffc600;
+      --accent2: #ff59b9;
+      --muted: #cbd6e4;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family: Inter, system-ui, 'Segoe UI', Roboto, Arial;
+      background: linear-gradient(180deg,var(--bg),#041022);
+      color: var(--muted);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px;
+    }
+    .container{
+      width:100%;
+      max-width:1000px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.04));
+      border-radius:12px;
+      padding:26px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+      text-align:center;
+    }
+
+    h2{ color:var(--accent); margin:8px 0 6px; font-size:1.6rem }
+    .meta{ color:var(--muted); margin-bottom:18px }
+
+    .suggestion-card{
+      background: rgba(255,255,255,0.02);
+      border-radius:12px;
+      padding:22px;
+      min-height:160px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      position:relative;
+    }
+
+    .label{
+      font-weight:800;
+      color:var(--accent2);
+      letter-spacing:0.6px;
+      margin-bottom:12px;
+      font-size:1rem;
+    }
+
+    .message{
+      font-size:1.12rem;
+      color:#eaf4ff;
+      line-height:1.6;
+      max-width:720px;
+      text-align:center;
+      min-height:56px;
+      padding:0 8px;
+    }
+
+    .controls{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      margin-top:18px;
+    }
+    .btn{
+      background:linear-gradient(90deg,var(--accent),var(--accent2));
+      color:#061124;
+      border:0;
+      padding:10px 16px;
+      border-radius:999px;
+      font-weight:800;
+      cursor:pointer;
+      transition:transform .15s;
+    }
+    .btn:active{ transform:scale(.98) }
+    .ghost{ background:transparent;color:var(--muted); border:1px solid rgba(255,255,255,0.04) }
+
+    .progress-dots{ display:flex; gap:8px; margin-top:12px; justify-content:center; }
+    .dot{ width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,0.06) }
+    .dot.active{ box-shadow:0 0 12px rgba(255,198,0,0.12); background:var(--accent) }
+
+    footer{ margin-top:18px; color:var(--muted); font-size:0.95rem }
+    .small{ font-size:0.86rem; color:#98a6bd; margin-top:8px }
+
+    @media (max-width:560px){
+      .message{ font-size:1rem; padding:0 6px }
+      .container{ padding:16px }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 id="final-heading">One Last Thing...</h2>
+    <p class="meta">A few things from the heart — read slowly, one word at a time 💭</p>
+
+    <div class="suggestion-card">
+      <div class="label" id="label">Message 1</div>
+      <div id="message" class="message"></div>
+
+      <div class="progress-dots" id="dots"></div>
+      <div class="small">Tip: Click <b>Next</b> to view the next message or <b>Replay</b> to see it again.</div>
+    </div>
+
+    <div class="controls">
+      <button id="prevBtn" class="btn ghost">◀ Previous</button>
+      <button id="replayBtn" class="btn">🔁 Replay</button>
+      <button id="nextBtn" class="btn">Next ▶</button>
+    </div>
+
+    <div style="margin-top:12px;">
+      <button id="sendBtn" class="btn" style="display:none">Send Wish ✉️</button>
+    </div>
+
+    <footer>
+      Made with ❤️ by your brother from another mother!
+    </footer>
+  </div>
+
+  <script>
+    (function(){
+      // 🎯 Heartfelt + Suspenseful Messages
+      const suggestions = [
+        "Dear Guruji, your presence in college was like that one person who makes every dull day brighter. You didn’t just teach — you inspired.",
+        "Sometimes we tease you, sometimes we fight, but deep down — you’ve been that big brother figure we all silently respect.",
+        "There’s something I’ve wanted to say for a while... maybe it’s funny... maybe serious... but it’s definitely from the heart.",
+        "Manya..! Remember — she is not yours even if you like her! 😅 Just kidding bro, but hey, don’t let small crushes mess your smile!",
+        "You may feel like akka (Kulli) changed — maybe she’s dealing with her own things. Don’t overthink, you’re still her favorite goofball.",
+        "Never forget — even when life feels unfair or people act weird, you are special to many of us. More than you’ll ever realize.",
+        "I’m not sure about everyone else... but I’m always there for you — through chaos, calm, and every stupid plan we make next.",
+        "I hope we both found something rare — a true friendship that’s beyond words, just unspoken understanding.",
+        "So here’s my last wish for you — be bold, be peaceful, laugh loud, love deeply, and stay the same Guruji who makes everything better."
+      ];
+
+      const labelEl = document.getElementById('label');
+      const msgEl = document.getElementById('message');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const replayBtn = document.getElementById('replayBtn');
+      const sendBtn = document.getElementById('sendBtn');
+      const dotsEl = document.getElementById('dots');
+
+      let idx = 0, revealTimer = null, wordIndex = 0;
+
+      function renderDots(){
+        dotsEl.innerHTML = '';
+        for(let i=0;i<suggestions.length;i++){
+          const d = document.createElement('div');
+          d.className = 'dot' + (i===idx ? ' active' : '');
+          dotsEl.appendChild(d);
+        }
+      }
+
+      function revealCurrent(){
+        clearReveal();
+        msgEl.textContent = '';
+        const text = suggestions[idx];
+        const words = text.split(' ');
+        wordIndex = 0;
+        labelEl.textContent = 'Message ' + (idx+1);
+        renderDots();
+        const pace = 250; // speed of each word
+        revealTimer = setInterval(()=>{
+          if(wordIndex >= words.length){
+            clearReveal();
+            sendBtn.style.display = (idx === suggestions.length - 1) ? 'inline-block' : 'none';
+            return;
+          }
+          msgEl.textContent += (wordIndex === 0 ? '' : ' ') + words[wordIndex];
+          wordIndex++;
+        }, pace);
+      }
+
+      function clearReveal(){
+        if(revealTimer){ clearInterval(revealTimer); revealTimer = null; }
+      }
+
+      prevBtn.addEventListener('click', ()=>{
+        if(idx === 0) return;
+        idx--;
+        sendBtn.style.display = 'none';
+        revealCurrent();
+      });
+
+      nextBtn.addEventListener('click', ()=>{
+        if(idx < suggestions.length - 1){
+          idx++;
+          revealCurrent();
+        }
+      });
+
+      replayBtn.addEventListener('click', ()=> revealCurrent());
+
+      sendBtn.addEventListener('click', ()=>{
+        alert("Your wish has been sent to Guruji 🎉\n\nRemember — friendships like this last forever ❤️");
+        window.location.href = 'index.html';
+      });
+
+      document.addEventListener('keydown', (e)=>{
+        if(e.key === 'ArrowRight') nextBtn.click();
+        if(e.key === 'ArrowLeft') prevBtn.click();
+        if(e.key === ' ' && document.activeElement === document.body){ e.preventDefault(); replayBtn.click(); }
+      });
+
+      renderDots();
+      revealCurrent();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Happy Birthday Guruji!</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      background: radial-gradient(circle at 10% 10%, #122033 0%, #0f1724 50%, #0b1320 100%);
+      color: #ffc600;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+    }
+    .hero-title {
+      font-size: clamp(2.5rem, 5vw, 3.8rem);
+      font-weight: 800;
+      background: linear-gradient(90deg, #ffd86b, #ff9ad6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1.2rem;
+      text-shadow: 0 5px 20px rgba(0,0,0,0.6);
+    }
+    .profile-img {
+      max-width: 500px;
+      width: 90%;
+      height: auto;
+      border-radius: 16px;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.5);
+      margin-bottom: 1.5rem;
+      object-fit: cover;
+    }
+    .message-card {
+      max-width: 600px;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(8px);
+      border-radius: 14px;
+      padding: 1.4rem 1.8rem;
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+      color: #f0f0f0;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    .btn {
+      background: linear-gradient(90deg, #ffc600, #ff59b9);
+      color: #061124;
+      border: none;
+      padding: 0.9em 2.2em;
+      border-radius: 30px;
+      font-size: 1.2em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(255,198,0,0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="hero-title">Happy Birthday, <span class="name">Guruji</span> 🎉</h1>
+  <img src="guru.jpg" alt="Guruji portrait" class="profile-img" />
+
+  <div class="message-card">
+    <p class="intro">My first and closest friend in college — like a brother from another mother and a wise mentor.</p>
+    <p class="wish">May this year bring you new heights, endless joy, and all the success you deserve. Thank you for every laugh, every lesson, and every late-night chat.</p>
+  </div>
+
+  <button class="btn" id="wishBtn">Celebrate 🎂</button>
+
+  <script>
+    document.getElementById('wishBtn').addEventListener('click', function() {
+      window.location.href = 'celebrate.html';
+    });
+  </script>
+
+</body>
+</html>

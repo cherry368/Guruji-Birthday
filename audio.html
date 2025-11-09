@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Audio Wish for Guruji</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      background: linear-gradient(180deg, #071224, #0b1b33);
+      color: #ffc600;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 3em 2em;
+      border-radius: 18px;
+      box-shadow: 0 0 25px rgba(255, 198, 0, 0.12);
+      max-width: 760px;
+      width: 96%;
+    }
+
+    h2 {
+      font-size: 2.2rem;
+      margin-bottom: 1.5em;
+      color: #ffde59;
+      text-shadow: 0 0 8px rgba(255, 198, 0, 0.45);
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1em;
+      margin-top: 1.5em;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      background: linear-gradient(90deg, #ffc600, #ff59b9);
+      color: #061124;
+      border: none;
+      padding: 0.9em 1.6em;
+      border-radius: 30px;
+      font-size: 1.05em;
+      cursor: pointer;
+      font-weight: 700;
+      transition: 0.22s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn:hover {
+      transform: scale(1.03);
+      color: #fff;
+    }
+
+    .small-link {
+      display: inline-block;
+      margin-top: 1.25rem;
+      color: #ffc600;
+      font-weight: 600;
+      text-decoration: none;
+      background: transparent;
+      padding: 0.35rem 0.6rem;
+      border-radius: 8px;
+      transition: 0.2s;
+      box-shadow: 0 6px 20px rgba(255,198,0,0.03);
+    }
+    .small-link:hover { color: #ff59b9; transform: translateY(-2px); text-shadow: 0 6px 18px rgba(255,89,185,0.12); }
+
+    audio { display: none; }
+
+    footer { margin-top: 2em; font-size: 0.98rem; color: #ffc600; opacity: 0.95; }
+  </style>
+</head>
+<body>
+
+  <div class="container" role="main" aria-labelledby="heading-audio">
+    <h2 id="heading-audio">🎧 Close your eyes and listen to this special audio for Guruji 🎶</h2>
+
+    <div class="controls" role="region" aria-label="audio controls">
+      <button id="playPauseBtn" class="btn" aria-pressed="false">▶️ Play</button>
+      <a class="btn" href="audio.mp3" download aria-label="Download audio">⬇️ Download</a>
+    </div>
+
+    <!-- small navigation link to next page -->
+    <div style="text-align:center">
+      <a class="small-link" href="memories.html" id="toMemoriesLink">Go to Memories 📸</a>
+    </div>
+
+    <audio id="wishAudio" src="audio.mp3"></audio>
+
+    <footer>
+      <p>Feel the emotions... every word is for you 💛</p>
+    </footer>
+  </div>
+
+  <script>
+    const audio = document.getElementById('wishAudio');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+
+    playPauseBtn.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play().catch(()=>{/* user gesture may be required on some browsers */});
+        playPauseBtn.textContent = '⏸️ Pause';
+        playPauseBtn.setAttribute('aria-pressed','true');
+      } else {
+        audio.pause();
+        playPauseBtn.textContent = '▶️ Play';
+        playPauseBtn.setAttribute('aria-pressed','false');
+      }
+    });
+
+    // reset button when audio ends
+    audio.addEventListener('ended', () => {
+      playPauseBtn.textContent = '▶️ Play';
+      playPauseBtn.setAttribute('aria-pressed','false');
+    });
+
+    // Optional: keyboard support (Space toggles)
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' && document.activeElement === document.body) {
+        e.preventDefault();
+        playPauseBtn.click();
+      }
+    });
+  </script>
+
+</body>
+</html>
